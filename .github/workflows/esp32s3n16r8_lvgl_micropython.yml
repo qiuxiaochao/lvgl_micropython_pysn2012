@@ -1,5 +1,5 @@
 # 定义工作流名称
-name: esp32s3n16r8_lvgl_micropython
+name: esp32s3n16r8_red_lvgl_micropython
 
 # 触发条件：仅手动触发
 on:
@@ -85,7 +85,7 @@ jobs:
     - name: 8.使用 make.py 编译指定板型/Flash/显示/触摸配置
       run: |
         # 调用 make.py 进行编译
-        python3 make.py esp32 BOARD=ESP32_GENERIC_S3 BOARD_VARIANT=SPIRAM_OCT --flash-size=16 DISPLAY=all INDEV=all --enable-uart-repl=y --enable-jtag-repl=n --enable-cdc-repl=n
+        python3 make.py esp32 BOARD=ESP32_GENERIC_S3 BOARD_VARIANT=SPIRAM_OCT --flash-size=16 DISPLAY=ili9341 DISPLAY=st7789 INDEV=xpt2046 INDEV=gt911 --enable-uart-repl=y --enable-jtag-repl=n --enable-cdc-repl=n
 
     # 9. 收集固件到统一目录
     - name: 9.重命名并收集所有固件到 ~/artifacts
@@ -99,7 +99,7 @@ jobs:
         FW_PATH="${BUILD_DIR}/build-ESP32_GENERIC_S3-SPIRAM_OCT/firmware.bin"  
         
         # 组合最终文件名：板型_可选variant_FlashMB_显示_触摸.bin
-        OUT_NAME="esp32s3n16r8_lvgl_micropython.bin"
+        OUT_NAME="esp32s3n16r8_red_lvgl_micropython.bin"
         
         # 复制并重命名     
         cp "$FW_PATH" "$ARTIFACTS_DIR/$OUT_NAME"
@@ -110,5 +110,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         # 产物名与文件名保持一致，便于识别
-        name: esp32s3n16r8_lvgl_micropython
+        name: esp32s3n16r8_red_lvgl_micropython
         path: ~/artifacts/*.bin
